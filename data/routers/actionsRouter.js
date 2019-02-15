@@ -65,15 +65,19 @@ router.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id;
 
-        const action = await Actions.get(id);
-    
-        if (action) {
-            await Actions.remove(id).then(deleted => {
-                if (deleted === 1) {
-                    return res.status(204).end();
-                };
-            });
-        }
+        await Actions.get(id).then(action => {
+            if (action) {
+                Actions.remove(id).then(deleted => {
+                    if (deleted === 1) {
+                        return res.status(204).end();
+                    };
+                }).catch(err => {
+                    res.status(500).json({error: "FROM REMOVE There was an error deleting the action."});
+                })
+            } else {
+                res.status(404).json({error: "An action with the specified ID does not exist."});
+            }
+        })
     } catch {
         res.status(500).json({error: "There was an error deleting the action."});
     }

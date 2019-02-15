@@ -26,13 +26,26 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+One main feature of Express is making server-side routing easy. This directs requests from the client side to the appropriate request handler depending on the URL and HTTP method. A server only needs one URL per resource, and Express will know what Javascript code to use based on the HTTP verb used.
+
+Another feature is middleware. Since Express is very minimal, middleware from various sources can be used to add extra functionality to an application. Express routing is actually middleware!
+
+
 - [ ] Describe Middleware?
+
+Middleware are opt-in pieces of code that add features to applications, and in the case of this week's lesson, specifically to Express. They are essentially functions that receive the req and res arguments, perform operations on them (which potentially changes them), and then either move onto the next middleware or return a response to the client.
 
 - [ ] Describe a Resource?
 
+A resource is some organized data stored in a database. They can be accessed by API endpoints and CRUD operations can be performed on them. The resource can change depending on what types of CRUD operations are used.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+An API can return to the client an HTTP status code as well as either a signifier communicating that some data were changed, and/or return the changed data. A good status code to send would be 200 (OK).
+
 - [ ] How can we partition our application into sub-applications?
+
+Sub-routes can be partitioned by creating separate files for routes that use the same base endpoint, and connecting the API endpoint to the proper route from server.js. One would make sure to import the file into server.js using require, then use the code server.use("/specific/endpoint", importedFile);
 
 ## Project Setup
 
