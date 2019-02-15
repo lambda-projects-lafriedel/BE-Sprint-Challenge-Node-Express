@@ -71,12 +71,10 @@ router.delete('/:id', async (req, res) => {
                     if (deleted === 1) {
                         return res.status(204).end();
                     };
-                }).catch(err => {
-                    res.status(500).json({error: "FROM REMOVE There was an error deleting the action."});
-                })
-            } else {
-                res.status(404).json({error: "An action with the specified ID does not exist."});
+                });
             }
+        }).catch(err => {
+            res.status(404).json({error: "The action with the specified ID does not exist."});
         })
     } catch {
         res.status(500).json({error: "There was an error deleting the action."});
