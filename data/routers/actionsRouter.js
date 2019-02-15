@@ -37,6 +37,26 @@ router.post('/', async (req, res) => {
     }
 })
 //PUT to /api/actions/:id
+router.put('/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { project_id, description } = req.body;
+
+        if (!project_id || !description) {
+            res.status(400).json({message: "Both an action id and description are required."});
+        } else {
+            const updatedAction = await Actions.update(id, req.body);
+
+            if (!updatedAction) {
+                res.status(404).json({error: "The action with the specified ID does not exist."});
+            } else {
+                res.status(200).json(updatedAction);
+            }
+        }  
+    } catch {
+        res.status(500).json({error: "There was an error updating the action."});
+    }
+})
 //DELETE to /api/actions/:id
 
 module.exports = router;
