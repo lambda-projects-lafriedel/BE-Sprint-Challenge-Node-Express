@@ -5,7 +5,7 @@ const Actions = require('../helpers/actionModel');
 
 const router = express.Router();
 
-//GET to /api/projects
+//GET to /api/projects -- doublechecked
 router.get('/', async (req, res) => {
     try {
         const projects = await Projects.get();
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-//GET to /api/projects/:id/actions
+//GET to /api/projects/:id/actions -- doublechecked 
 router.get('/:id/actions', (req,res) => {
     const id = req.params.id;
 
@@ -30,7 +30,7 @@ router.get('/:id/actions', (req,res) => {
         res.status(500).json({error: "There was an error retrieving the actions for the project."})
     });
 })
-//POST to /api/projects
+//POST to /api/projects -- doublechecked
 router.post('/', async (req, res) => {
     try { 
         const { name, description } = req.body
@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
         res.status(500).json({error: "There was an error adding the project."});
     }
 })
-//PUT to /api/projects/:id
+//PUT to /api/projects/:id -- doublechecked
 router.put('/:id', async (req, res) => {
     try {
         const id = req.params.id;
