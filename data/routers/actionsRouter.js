@@ -58,5 +58,23 @@ router.put('/:id', async (req, res) => {
     }
 })
 //DELETE to /api/actions/:id
+router.delete('/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const action = await Actions.get(id);
+    
+        if (action) {
+            await Actions.remove(id).then(deleted => {
+                if (deleted === 1) {
+                    return res.status(204).end();
+                };
+            });
+        }
+    } catch {
+        res.status(500).json({error: "There was an error deleting the action."});
+    }
+    
+})
 
 module.exports = router;

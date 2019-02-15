@@ -1,6 +1,7 @@
 const express = require('express');
 
 const Projects = require('../helpers/projectModel');
+const Actions = require('../helpers/actionModel');
 
 const router = express.Router();
 
@@ -50,5 +51,35 @@ router.put('/:id', async (req, res) => {
     }
 })
 //DELETE to /api/projects/:id
+router.delete('/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const project = await Projects.get(id);
+
+        if (project) {
+            const projectActions = await Projects.getProjectActions(id);
+
+            for (let i = 0; i < projectActions.length; i++) {
+                Actions.remove(projectActions[i].id).then(deleted => {
+                    if (deleted === 0) {
+                        res.status(500).json({error: "There was an error deleting an action for this project."});
+                    } else {
+                        res.status(204).end();
+                    }
+                });
+            };
+
+            await Projects.remove(id).then(deleted => {
+                if (deleted === 1) {
+                    return res.status(204).end();
+                }
+            });
+        } else {
+            res.status(404).json({error: "A project with the specified ID does not exist and therefore cannot be deleted."});
+        }
+    } catch {
+        res.status(500).json({error: "There was an error deleting the project."})
+    }
+})
 
 module.exports = router;
