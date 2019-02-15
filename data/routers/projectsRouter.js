@@ -85,27 +85,27 @@ router.delete("/:id", async (req, res) => {
 
   try {
       const id = req.params.id;
-      const project = await Projects.get(id);
-
-      if (project) {
-          const projectActions = await Projects.getProjectActions(id);
-
-          for (let i = 0; i < projectActions.length; i++) {
-              Actions.remove(projectActions[i].id).then(deleted => {
-                  if (deleted === 1) {
-                      return res.status(204).end();
-                  };
-              });
-          };
-
-          await Projects.remove(id).then(deleted => {
-              if (deleted === 1) {
-                  return res.status(204).end();
-              }
-          });
-      } else {
-          res.status(404).json({error: "A project with the specified ID does not exist and therefore cannot be deleted."});
-      }
+      await Projects.get(id).then(project => {
+        if (project) {
+            const projectActions = Projects.getProjectActions(id);
+  
+            for (let i = 0; i < projectActions.length; i++) {
+                Actions.remove(projectActions[i].id).then(deleted => {
+                    if (deleted === 1) {
+                        return res.status(204).end();
+                    };
+                });
+            };
+  
+            Projects.remove(id).then(deleted => {
+                if (deleted === 1) {
+                    return res.status(204).end();
+                }
+            });
+        }
+      }).catch(err => {
+        res.status(404).json({error: "A project with the specified ID does not exist and therefore cannot be deleted."});
+      })
   } catch {
       res.status(500).json({error: "There was an error deleting the project."})
   }
