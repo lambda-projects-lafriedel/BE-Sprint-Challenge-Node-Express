@@ -15,6 +15,21 @@ router.get('/', async (req, res) => {
         res.status(500).json({error: "There was an error retrieving the projects."});
     }
 })
+
+//GET to /api/projects/:id/actions
+router.get('/:id/actions', (req,res) => {
+    const id = req.params.id;
+
+    Projects.getProjectActions(id).then(actions => {
+        if (actions.length > 0) {
+            res.status(200).json(actions);
+        } else {
+            res.status(404).json({error: "A project with the specified ID does not exist."});
+        }
+    }).catch(err => {
+        res.status(500).json({error: "There was an error retrieving the actions for the project."})
+    });
+})
 //POST to /api/projects
 router.post('/', async (req, res) => {
     try { 
