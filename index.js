@@ -1,3 +1,5 @@
-// play this: https://www.youtube.com/watch?v=d-diB65scQU
+const server = require('./server');
 
-// code away!
+server.listen(8000, () => {
+    console.log("The server is listening on port 8000");
+})
